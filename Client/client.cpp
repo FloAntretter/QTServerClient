@@ -24,6 +24,5 @@ void Client::start(QString address, quint16 port)
 
 void Client::startTransfer()
 {
-    client.write("12.,4");
-    client.close();
+    client.write("10MUL43END");
 }
