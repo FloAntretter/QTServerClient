@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QtNetwork/QTcpServer>
 #include <QtNetwork/QTcpSocket>
-#include <QDebug>
+#include <QMessageBox>
 #include <string>
 
 namespace Ui {
@@ -23,13 +23,16 @@ public slots:
     void acceptConnection();
     void startRead();
 
+private slots:
+    void on_quitButton_clicked();
+
+    void on_confirmPortButton_clicked();
+
 private:
     Ui::Server *ui;
 
     QTcpServer server;
     QTcpSocket* client;
-
-    int port = 12345;
 };
 
 #endif // SERVER_H
