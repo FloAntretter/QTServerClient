@@ -36,7 +36,6 @@ void Server::startRead()
     char buffer[1024];
 
     client->read(buffer, client->bytesAvailable());
-    client->close();
 
     QString bufferString(buffer);
 
@@ -57,6 +56,14 @@ void Server::startRead()
     ui->factor1LineEdit->setText(factor1String);
     ui->factor2LineEdit->setText(factor2String);
     ui->productLineEdit->setText(productString);
+
+    QByteArray resultBytes = productString.toLatin1();
+    char * result = resultBytes.data();
+
+    client->write(result);
+    client->close();
+
+    ui->resultSentLabel->setText("Das Ergebnis wurde zurückgesendet.");
 }
 
 
