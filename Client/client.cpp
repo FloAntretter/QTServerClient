@@ -7,7 +7,8 @@ Client::Client(QWidget *parent) :
     ui(new Ui::Client)
 {
     ui->setupUi(this);
-    connect(&client, SIGNAL(connected()), this, SLOT(startTransfer()));
+    connect(&client, SIGNAL(connected()), this, SLOT(startWrite()));
+    connect(&client, SIGNAL(readyRead()), this, SLOT(startRead()));
 }
 
 Client::~Client()
@@ -22,7 +23,13 @@ void Client::start(QString address, quint16 port)
     client.connectToHost(addr, port);
 }
 
-void Client::startTransfer()
+void Client::startWrite()
 {
-    client.write("10MUL43END");
+    client.write("10MUL43");
+}
+
+void Client::startRead()
+{
+    QByteArray result = client.readAll();
+    qDebug() << QString::fromLocal8Bit(result);
 }

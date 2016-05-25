@@ -19,7 +19,8 @@ public:
     void start(QString address, quint16 port);
 
 public slots:
-    void startTransfer();
+    void startWrite();
+    void startRead();
 
 private:
     Ui::Client *ui;
