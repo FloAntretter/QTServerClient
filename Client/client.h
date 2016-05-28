@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QString>
 #include <QtNetwork/QTcpSocket>
+#include <QMessageBox>
 
 namespace Ui {
 class Client;
@@ -22,9 +23,20 @@ public slots:
     void startWrite();
     void startRead();
 
+private slots:
+    void on_quitButton_clicked();
+
+    void on_connectButton_clicked();
+
+    void on_ipLineEdit_textChanged();
+
+    void on_portLineEdit_textChanged();
+
 private:
     Ui::Client *ui;
     QTcpSocket client;
+    void connectToServer();
+    bool connected = false;
 };
 
 #endif // CLIENT_H
