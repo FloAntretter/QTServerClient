@@ -33,7 +33,7 @@ void Server::acceptConnection()
 
 void Server::startRead()
 {
-    char buffer[1024];
+    char buffer[1024] = {0};
 
     client->read(buffer, client->bytesAvailable());
 
@@ -61,7 +61,6 @@ void Server::startRead()
     char * result = resultBytes.data();
 
     client->write(result);
-    client->close();
 
     ui->resultSentLabel->setText("Das Ergebnis wurde zurückgesendet.");
 }
