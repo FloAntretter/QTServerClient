@@ -21,13 +21,12 @@ void Client::startWrite()
 {
     QString factor1 = ui->factor1LineEdit->text();
     QString factor2 = ui->factor2LineEdit->text();
-    QString messageString = factor1 + "MUL" + factor2;
+    QString messageString = factor1 + "MUL" + factor2 + "END";
     char * message = {};
     QByteArray messageByteArray = messageString.toLatin1();
     message = messageByteArray.data();
     if(factor1 != "" && factor2 != "")
     {
-        qDebug() << message;
         client.write(message);
     }
     else if(factor1 == "")
@@ -48,7 +47,6 @@ void Client::startWrite()
 
 void Client::startRead()
 {
-    qDebug() << "sdfasdfwew dadesffaggzt";
     QByteArray result = client.readAll();
     ui->productLineEdit->setText(QString::fromLocal8Bit(result));
 }
