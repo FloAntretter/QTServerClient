@@ -47,11 +47,11 @@ void Server::startRead()
     slicePos = bufferString.size() - (slicePos + 3);
     QString factor2String = bufferString.right(slicePos);
 
-    int factor1 = factor1String.toInt();
-    int factor2 = factor2String.toInt();
-    int product = factor1 * factor2;
+    double factor1 = factor1String.toDouble();
+    double factor2 = factor2String.toDouble();
+    double product = factor1 * factor2;
 
-    QString productString = QString::number(product);
+    QString productString = QString::number(product, 'g', 100);
 
     ui->factor1LineEdit->setText(factor1String);
     ui->factor2LineEdit->setText(factor2String);
