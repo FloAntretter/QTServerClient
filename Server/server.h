@@ -6,6 +6,7 @@
 #include <QtNetwork/QTcpSocket>
 #include <QMessageBox>
 #include <string>
+#include <QNetworkInterface>
 
 namespace Ui {
 class Server;

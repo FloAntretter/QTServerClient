@@ -9,6 +9,19 @@ Server::Server(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    foreach (const QHostAddress &address, QNetworkInterface::allAddresses()) {
+        if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost))
+        {
+            QString addressString = address.toString();
+            QStringList addressParts = addressString.split('.');
+            if(addressParts.at(0) != "169")
+            {
+                setWindowTitle("Server (IP: " + address.toString() + ")");
+            }
+        }
+
+    }
+
     connect(&server, SIGNAL(newConnection()), this, SLOT(acceptConnection()));
 
     on_confirmPortButton_clicked();
@@ -51,7 +64,7 @@ void Server::startRead()
     double factor2 = factor2String.toDouble();
     double product = factor1 * factor2;
 
-    QString productString = QString::number(product, 'g', 100);
+    QString productString = QString::number(product, 'g', 20);
 
     ui->factor1LineEdit->setText(factor1String);
     ui->factor2LineEdit->setText(factor2String);
