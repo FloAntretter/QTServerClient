@@ -19,7 +19,6 @@ Server::Server(QWidget *parent) :
                 setWindowTitle("Server (IP: " + address.toString() + ")");
             }
         }
-
     }
 
     connect(&server, SIGNAL(newConnection()), this, SLOT(acceptConnection()));
@@ -48,23 +47,43 @@ void Server::startRead()
 {
     char buffer[1024] = {0};
 
+    QString factor1String = "";
+    QString factor1Decimals = "";
+    QString factor2String = "";
+    QString factor2Decimals = "";
+    QString productString = "";
+
+    int numberOfDecimals = 0;
+    int sizeOfProduct = 0;
+
+    double factor1 = 0;
+    double factor2 = 0;
+    double product = 0;
+
     client->read(buffer, client->bytesAvailable());
 
     QString bufferString(buffer);
 
-    int slicePos = bufferString.indexOf("END");
-    bufferString = bufferString.left(slicePos);
+    bufferString = bufferString.split("END").at(0);
 
-    slicePos = bufferString.indexOf("MUL");
-    QString factor1String = bufferString.left(slicePos);
-    slicePos = bufferString.size() - (slicePos + 3);
-    QString factor2String = bufferString.right(slicePos);
+    factor1String = bufferString.split("MUL").at(0);
+    factor2String = bufferString.split("MUL").at(1);
 
-    double factor1 = factor1String.toDouble();
-    double factor2 = factor2String.toDouble();
-    double product = factor1 * factor2;
+    factor1Decimals = factor1String.split('.').at(1);
+    factor2Decimals = factor2String.split('.').at(1);
+    numberOfDecimals = factor1Decimals.size() + factor2Decimals.size();
 
-    QString productString = QString::number(product, 'g', 20);
+    factor1 = factor1String.toDouble();
+    factor2 = factor2String.toDouble();
+    product = factor1 * factor2;
+
+    productString = QString::number(product, 'g', 100);
+    sizeOfProduct = numberOfDecimals + productString.split('.').at(0).size();
+    if(sizeOfProduct > 37)
+    {
+        sizeOfProduct = 37;
+    }
+    productString = QString::number(product, 'g', sizeOfProduct);
 
     ui->factor1LineEdit->setText(factor1String);
     ui->factor2LineEdit->setText(factor2String);
