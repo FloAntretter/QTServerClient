@@ -9,17 +9,7 @@ Server::Server(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    foreach (const QHostAddress &address, QNetworkInterface::allAddresses()) {
-        if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost))
-        {
-            QString addressString = address.toString();
-            QStringList addressParts = addressString.split('.');
-            if(addressParts.at(0) != "169")
-            {
-                setWindowTitle("Server (IP: " + address.toString() + ")");
-            }
-        }
-    }
+    showIP();
 
     connect(&server, SIGNAL(newConnection()), this, SLOT(acceptConnection()));
 
@@ -32,6 +22,21 @@ Server::~Server()
     server.close();
 }
 
+void Server::showIP()
+{
+    foreach (const QHostAddress &address, QNetworkInterface::allAddresses()) {
+        if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost))
+        {
+            QString addressString = address.toString();
+            QStringList addressParts = addressString.split('.');
+            if(addressParts.at(0) != "169")
+            {
+                setWindowTitle("Server (IP: " + address.toString() + ")");
+            }
+        }
+    }
+}
+
 void Server::acceptConnection()
 {
     client = server.nextPendingConnection();
@@ -39,7 +44,7 @@ void Server::acceptConnection()
     connect(client, SIGNAL(readyRead()), this, SLOT(startRead()));
 
     QHostAddress clientIPAddress = client->localAddress();
-    QString clientIPString = clientIPAddress.toString();
+    QString clientIPString = clientIPAddress.toString().remove("::ffff:");
     ui->connectionLabel->setText("Verbindung mit " + clientIPString + " wurde hergestellt.");
 }
 

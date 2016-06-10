@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <string>
 #include <QNetworkInterface>
+#include <QFile>
 
 namespace Ui {
 class Server;
@@ -34,6 +35,8 @@ private:
 
     QTcpServer server;
     QTcpSocket* client;
+
+    void showIP();
 };
 
 #endif // SERVER_H

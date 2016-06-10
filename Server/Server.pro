@@ -18,4 +18,6 @@ SOURCES += main.cpp\
 
 HEADERS  += server.h
 
-FORMS    += server.ui
+FORMS    += server.ui\
+
+
